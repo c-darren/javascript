@@ -1,0 +1,67 @@
+function rightclick() {
+if (document.addEventListener) {
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    //Menu on Right Click!
+      Swal.fire({
+      title: 'Menu',
+      icon: 'info',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Refresh',
+      denyButtonText: `Close Tab`,
+      }).then((result) => {
+
+      //Option: Refresh
+      if (result.isConfirmed) {
+        let timerInterval
+        Swal.fire({
+        title: 'Refresh!',
+        html: 'Refresh in <b></b> mlliseconds',
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer().querySelector('b')
+        timerInterval = setInterval(() => {
+            b.textContent = Swal.getTimerLeft()
+          }, 100)
+        },
+        willClose: () => {
+        clearInterval(timerInterval)
+        }
+      }).then((result) => {
+      //Result when timer: 0
+      if (result.dismiss === Swal.DismissReason.timer) {
+          console.log('I was closed by the timer')
+          window.location.reload()
+        }
+      })
+      //Option: Close
+            } else if (result.isDenied) {
+            javascript:window.close();
+            }
+            });
+          
+    
+    }, false);  
+    } else {
+    document.attachEvent('oncontextmenu', function() {
+        window.event.returnValue = false;
+    });
+}
+};
+
+function devtoolIsOpening() {
+        console.clear();
+        let before = new Date().getTime();
+        debugger;
+        let after = new Date().getTime();
+        if (after - before > 10) {
+            alert(" Don't open Developer Tools!! ");
+            javascript:window.location.reload();
+        }
+        setTimeout(devtoolIsOpening, 10);
+    }
+    devtoolIsOpening();
